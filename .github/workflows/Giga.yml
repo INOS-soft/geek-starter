@@ -1,0 +1,100 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Person to greet'
+        # Default value if no value is explicitly provided
+        default: 'World'
+        # Input has to be provided for the workflow to run
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  greet:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+  - name: elixir_bot
+  # You may pin to the exact commit or the version.
+  # uses: clszzyh/elixir_bot@01972b875405dbe829f13b26194de2822d06f1fe
+  uses: clszzyh/elixir_bot@v0.1.5
+  with:
+    # Github Token
+    GITHUB_TOKEN: 
+    - name: Expand tokens
+  # You may pin to the exact commit or the version.
+  # uses: sandersaares-actions/expand-tokens@45b05ad9c2027690656a303ec0e881d953f08e0e
+  uses: sandersaares-actions/expand-tokens@2020-01-28
+  with:
+    # Path to the file or directory to process.
+    path: 
+    # Filename filter, used if path is a directory. Semicolon separates patterns.
+    filenames: # optional
+    # Whether to recursively search for files, used if path is a directory.
+    recursive: # optional
+    - name: Stale for Actions
+  # You may pin to the exact commit or the version.
+  # uses: probot/stale-action@df92a96cd43d1ff771674860333a588c62b929b1
+  uses: probot/stale-action@v1.1
+  - name: Set up gcloud Cloud SDK environment
+  # You may pin to the exact commit or the version.
+  # uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+  uses: google-github-actions/setup-gcloud@v0.2.0
+  with:
+    # Version of the gcloud SDK to install. If unspecified or set to "latest",
+the latest available gcloud SDK version for the target platform will be
+installed. Example: "290.0.1".
+    version: # optional, default is latest
+    # Service account email address to use for authentication. This is required
+for legacy .p12 keys but can be omitted for .json keys. This is usually of
+the format <name>@<project-id>.iam.gserviceaccount.com.
+    service_account_email: # optional
+    # Service account key to use for authentication. This should be the JSON
+formatted private key which can be exported from the Cloud Console. The
+value can be raw or base64-encoded.
+    service_account_key: # optional
+    # ID of the Google Cloud project. If provided, this will configure gcloud to
+use this project ID by default for commands. Individual commands can still
+override the project using the --project flag which takes precedence.
+    project_id: # optional
+    # Export the provided credentials as Google Default Application Credentials.
+This will make the credentials available to later steps via the
+GOOGLE_APPLICATION_CREDENTIALS environment variable. Future steps that
+consume Default Application Credentials will automatically detect and use
+these credentials.
+    export_default_credentials: # optional
+    - name: Starter Docker
+  # You may pin to the exact commit or the version.
+  # uses: CUBETIQ/starter-docker-actions@24aa129e67087e327ea77b0ca00d4ac827e024e4
+  uses: CUBETIQ/starter-docker-actions@v1
+  with:
+    # Docker image name
+    image: 
+    # Docker options
+    options: # optional
+    # Run commands inside container
+    run: # optional
+    # Use a specific shell for run commands
+    shell: # optional, default is sh
+    # Docker registry endpoint
+    registry: # optional
+    # Docker registry username
+    username: # optional
+    # Docker registry password
+    password: # optional
+    # Docker network
+    docker_network: # optional, default is ${{ job.container.network }}
+    # Runs a single command using the runners shell
+    - name: Send greeting
+      run: echo "Hello ${{ github.event.inputs.name }}"
